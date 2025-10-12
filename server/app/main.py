@@ -1,6 +1,14 @@
-def main():
-    print("Hello from server!")
+from fastapi import FastAPI
+
+from app.core.config import settings
+
+app = FastAPI(
+    title=settings.PROJECT_NAME,
+    description=settings.PROJECT_NAME,
+    version=settings.PROJECT_VERSION,
+)
 
 
-if __name__ == "__main__":
-    main()
+@app.get("/")
+def index():
+    return "Hi from projex!"
