@@ -6,7 +6,7 @@ from sqlmodel import SQLModel
 from alembic import context
 
 from app.core.config import settings
-from app.models import user, project, task, tag, comment
+from app.models import user, workspace, project, task, timesheet, tag, comment
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
@@ -17,7 +17,7 @@ config = context.config
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
     
-config.set_main_option('sqlalchemy.url', settings.DATABASE_URI)
+config.set_main_option('sqlalchemy.url', settings.DATABASE_URL)
 
 # add your model's MetaData object here
 # for 'autogenerate' support

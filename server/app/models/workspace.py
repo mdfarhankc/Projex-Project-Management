@@ -36,8 +36,8 @@ class Workspace(SQLModel, table=True):
     description: Optional[str] = None
 
     # Timestamp fields
-    created_at: datetime = Field(default_factory=datetime.now(timezone.utc))
-    updated_at: datetime = Field(default_factory=datetime.now(timezone.utc))
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
     # Owner (workspace creator) - Many2one
     owner_id: uuid.UUID = Field(foreign_key="users.id", nullable=False, index=True)

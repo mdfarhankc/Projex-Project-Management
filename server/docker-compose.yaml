@@ -1,0 +1,53 @@
+services:
+  db:
+    container_name: projex_postgres
+    image: postgres:16-alpine
+    restart: always
+    ports:
+      - 5433:5432
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: projex
+    volumes:
+      - projex_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: projex_redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - projex_redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  server:
+    container_name: projex_server
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 8001:8001
+    environment:
+      PORT: 8001
+      SECRET_KEY: hvfbkbhkjwahhfwiuevwefneihfviheb
+      DATABASE_URL: postgresql://postgres:admin@db:5432/projex
+      REDIS_URL: redis://redis:6379/0
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+volumes:
+  projex_postgres_data:
+  projex_redis_data:

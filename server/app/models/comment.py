@@ -16,8 +16,8 @@ class Comment(SQLModel, table=True):
     is_edited: bool = Field(default=False)
 
     # Timestamp fields
-    created_at: datetime = Field(default_factory=datetime.now(timezone.utc))
-    updated_at: datetime = Field(default_factory=datetime.now(timezone.utc))
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
     # Author - Many2one
     author_id: uuid.UUID = Field(foreign_key="users.id", index=True)

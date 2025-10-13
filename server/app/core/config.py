@@ -17,12 +17,18 @@ class Settings(BaseSettings):
     HOST: str = "0.0.0.0"
     PORT: int = 8000
     RELOAD: bool = False
-    
+
+    # Server
+    TOKEN_SECRET_KEY: str
+    TOKEN_ALGORITHM: str = "HS256"
+    ACCESS_TOKEN_EXPIRE_MINUTES: int = 30  # 30 minutes
+    REFRESH_TOKEN_EXPIRE_DAYS: int = 7  # 7 days
+
     # Database
-    DATABASE_URI: str
+    DATABASE_URL: str
     
-    # Token
-    
+    # Redis
+    REDIS_URL: str
 
     # First Superuser Creds
     FIRST_SUPERUSER_NAME: str = "Administrator"

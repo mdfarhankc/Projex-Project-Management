@@ -23,7 +23,7 @@ class ProjectMember(SQLModel, table=True):
 
     project_id: uuid.UUID = Field(foreign_key="projects.id", primary_key=True)
     user_id: uuid.UUID = Field(foreign_key="users.id", primary_key=True)
-    joined_at: datetime = Field(default_factory=datetime.now(timezone.utc))
+    joined_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
 
 class Project(SQLModel, table=True):
@@ -35,8 +35,8 @@ class Project(SQLModel, table=True):
     status: ProjectStatus = Field(default=ProjectStatus.PLANNING, index=True)
 
     # Timestamp fields
-    created_at: datetime = Field(default_factory=datetime.now(timezone.utc))
-    updated_at: datetime = Field(default_factory=datetime.now(timezone.utc))
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     start_date: Optional[datetime] = None
     end_date: Optional[datetime] = None
 

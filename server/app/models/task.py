@@ -48,8 +48,8 @@ class Task(SQLModel, table=True):
     # Timestamp fields
     due_date: Optional[datetime] = None
     completed_at: Optional[datetime] = None
-    created_at: datetime = Field(default_factory=datetime.now(timezone.utc))
-    updated_at: datetime = Field(default_factory=datetime.now(timezone.utc))
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
     # Owner - Many2one
     owner_id: uuid.UUID = Field(foreign_key="users.id", index=True)

@@ -16,9 +16,9 @@ class Timesheet(SQLModel, table=True):
     hours: float = Field(gt=0, description="Number of hours logged")
 
     # Timestamp fields
-    work_date: datetime = Field(default_factory=datetime.now(timezone.utc), index=True)
-    created_at: datetime = Field(default_factory=datetime.now(timezone.utc))
-    updated_at: datetime = Field(default_factory=datetime.now(timezone.utc))
+    work_date: datetime = Field(default_factory=lambda: datetime.now(timezone.utc), index=True)
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
     # User - Many2one
     user_id: uuid.UUID = Field(foreign_key="users.id", index=True)

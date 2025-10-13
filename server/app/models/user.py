@@ -23,8 +23,8 @@ class User(SQLModel, table=True):
     is_superuser: bool = Field(default=False)
 
     # Timestamp fields
-    created_at: datetime = Field(default_factory=datetime.now(timezone.utc))
-    updated_at: datetime = Field(default_factory=datetime.now(timezone.utc))
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     last_login_at: Optional[datetime] = None
 
     # Owned Projects - One2many
