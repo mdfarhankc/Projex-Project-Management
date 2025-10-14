@@ -1,4 +1,5 @@
-from fastapi import Depends, HTTPException
+import uuid
+from fastapi import Depends
 from fastapi.security import OAuth2PasswordBearer
 from typing import Annotated
 
@@ -25,7 +26,7 @@ def get_current_user(session: SessionDep, token: TokenDep) -> User:
     if token is None:
         raise UnAuthorizedException()
     user_id = decode_access_token(token=token)
-    user = session.get(User, user_id)
+    user = session.get(User, uuid.UUID(user_id))
     if not user:
         raise UserNotFoundException()
     if not user.is_active:
