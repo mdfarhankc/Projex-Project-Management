@@ -1,11 +1,12 @@
 import uuid
+from datetime import timedelta
 from redis import Redis
 
 
 def store_refresh_token_in_redis(*, redis: Redis, user_id: uuid.UUID, token: str, expiry_days: int = 7) -> None:
     redis.setex(
         f"refresh_token:{user_id}",
-        expiry_days * 24 * 60 * 60,
+        timedelta(days=expiry_days),
         token
     )
 

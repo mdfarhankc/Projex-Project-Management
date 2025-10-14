@@ -39,7 +39,7 @@ services:
       - 8001:8001
     environment:
       PORT: 8001
-      SECRET_KEY: hvfbkbhkjwahhfwiuevwefneihfviheb
+      TOKEN_SECRET_KEY: hvfbkbhkjwahhfwiuevwefneihfviheb
       DATABASE_URL: postgresql://postgres:admin@db:5432/projex
       REDIS_URL: redis://redis:6379/0
     depends_on:

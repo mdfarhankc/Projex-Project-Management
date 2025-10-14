@@ -31,6 +31,14 @@ class LoginResponse(BaseModel):
     user: UserResponse
 
 
+class CurrentUserResponse(UserResponse):
+    pass
+
+
+class RefreshTokenSchema(BaseModel):
+    refresh_token: str
+
+
 class RefreshTokenResponse(BaseModel):
     access_token: str
     refresh_token: str

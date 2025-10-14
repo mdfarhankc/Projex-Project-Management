@@ -1,23 +1,13 @@
-from fastapi import HTTPException, status, Depends
-from fastapi.security import OAuth2PasswordBearer
 from jose import jwt, JWTError
 from datetime import datetime, timedelta, timezone
-from typing import Any, Annotated
+from typing import Any
 from passlib.context import CryptContext
 
 from app.core.config import settings
-from app.core.database import SessionDep
-from app.models.user import User
-from app.exceptions.user import InactiveUserException, UserNotFoundException
 from app.exceptions.auth import InvalidTokenException
 
 # Password hashing
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-# OAuth2 reusable token dependency
-reusable_oauth2 = OAuth2PasswordBearer(
-    tokenUrl=f"{settings.API_V1_STR}/auth/login"
-)
-TokenDep = Annotated[str, Depends(reusable_oauth2)]
 
 
 # -----------------------------
@@ -74,17 +64,3 @@ def decode_refresh_token(*, token: str) -> str | Any:
         return payload["sub"]
     except JWTError:
         raise InvalidTokenException()
-
-
-# -----------------------------
-# Current User Dependency
-# -----------------------------
-def get_current_user(session: SessionDep, token: TokenDep) -> User:
-    """ Return the current authenticated user. """
-    user_id = decode_access_token(token=token)
-    user = session.get(User, user_id)
-    if not user:
-        raise UserNotFoundException()
-    if not user.is_active:
-        raise InactiveUserException()
-    return user

@@ -12,9 +12,9 @@ app = FastAPI(
 register_exception_handlers(app=app)
 
 
-@app.get("/")
+@app.get("/", status_code=200, summary="Welcome from Projex!")
 def index():
-    return "Hi from projex!"
+    return {"message": "Welcome from projex!"}
 
 
 app.include_router(api_router, prefix=settings.API_V1_STR)
