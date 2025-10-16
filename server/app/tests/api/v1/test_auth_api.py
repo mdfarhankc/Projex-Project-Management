@@ -5,7 +5,7 @@ from app.tests.api.deps import *
 
 
 # ------ Register API Tests -----------
-def test_auth_register_success(client: TestClient, user_data: dict[str, str]):
+def test_auth_register_api_success(client: TestClient, user_data: dict[str, str]):
     response = client.post(
         f"{settings.API_V1_STR}/auth/register", json=user_data)
     assert response.status_code == status.HTTP_201_CREATED
@@ -14,7 +14,7 @@ def test_auth_register_success(client: TestClient, user_data: dict[str, str]):
     assert "password" not in data
 
 
-def test_auth_register_user_exists(client: TestClient, user_data: dict[str, str]):
+def test_auth_register_api_user_exists(client: TestClient, user_data: dict[str, str]):
     client.post(
         f"{settings.API_V1_STR}/auth/register", json=user_data)
     response = client.post(
@@ -22,7 +22,7 @@ def test_auth_register_user_exists(client: TestClient, user_data: dict[str, str]
     assert response.status_code == status.HTTP_409_CONFLICT
 
 
-def test_auth_register_missing_fields(client: TestClient, user_data: dict[str, str]):
+def test_auth_register_api__missing_fields(client: TestClient, user_data: dict[str, str]):
     response = client.post(
         f"{settings.API_V1_STR}/auth/register", json={
             "full_name": user_data["full_name"]
@@ -31,7 +31,7 @@ def test_auth_register_missing_fields(client: TestClient, user_data: dict[str, s
 
 
 # ------ Login API Tests -----------
-def test_auth_login_success(client: TestClient, create_user: dict):
+def test_auth_login_api__success(client: TestClient, create_user: dict):
     response = client.post(
         f"{settings.API_V1_STR}/auth/login", data={
             "username": create_user["email"],
@@ -44,7 +44,7 @@ def test_auth_login_success(client: TestClient, create_user: dict):
     assert "user" in data
 
 
-def test_auth_login_user_not_found(client: TestClient, user_data: dict[str, str]):
+def test_auth_login_api__user_not_found(client: TestClient, user_data: dict[str, str]):
     response = client.post(
         f"{settings.API_V1_STR}/auth/login", data={
             "username": user_data["email"],
@@ -53,7 +53,7 @@ def test_auth_login_user_not_found(client: TestClient, user_data: dict[str, str]
     assert response.status_code == status.HTTP_404_NOT_FOUND
 
 
-def test_auth_login_missing_fields(client: TestClient, user_data: dict[str, str]):
+def test_auth_login_api__missing_fields(client: TestClient, user_data: dict[str, str]):
     response = client.post(
         f"{settings.API_V1_STR}/auth/login", data={
             "username": user_data["email"],
@@ -62,24 +62,24 @@ def test_auth_login_missing_fields(client: TestClient, user_data: dict[str, str]
 
 
 # --------- Current User API Tests -------
-def test_auth_current_user_success(auth_client: TestClient):
+def test_auth_current_user_api_success(auth_client: TestClient):
     response = auth_client.get(f"{settings.API_V1_STR}/auth/me")
     assert response.status_code == status.HTTP_200_OK
 
 
-def test_auth_current_user_no_token(client: TestClient):
+def test_auth_current_user_api_no_token(client: TestClient):
     response = client.get(f"{settings.API_V1_STR}/auth/me")
     assert response.status_code == status.HTTP_401_UNAUTHORIZED
 
 
-def test_auth_current_user_invalid_token(client: TestClient):
+def test_auth_current_user_api_invalid_token(client: TestClient):
     client.headers.update({"Authorization": "Bearer invalidtoken"})
     response = client.get(f"{settings.API_V1_STR}/auth/me")
     assert response.status_code == status.HTTP_401_UNAUTHORIZED
 
 
 # ------ Refresh Token API Tests ----------------
-def test_refresh_token_success(client: TestClient, refresh_token: str):
+def test_refresh_token_api_success(client: TestClient, refresh_token: str):
     response = client.post(f"{settings.API_V1_STR}/auth/refresh",
                            json={"refresh_token": refresh_token})
     assert response.status_code == status.HTTP_200_OK
@@ -88,30 +88,30 @@ def test_refresh_token_success(client: TestClient, refresh_token: str):
     assert "refresh_token" in data
 
 
-def test_refresh_token_no_token(client: TestClient):
+def test_refresh_token_api_no_token(client: TestClient):
     response = client.post(f"{settings.API_V1_STR}/auth/refresh")
     assert response.status_code == status.HTTP_422_UNPROCESSABLE_CONTENT
 
 
-def test_refresh_token_invalid_token(client: TestClient):
+def test_refresh_token_api_invalid_token(client: TestClient):
     response = client.post(f"{settings.API_V1_STR}/auth/refresh",
                            json={"refresh_token": "invalidtoken"})
     assert response.status_code == status.HTTP_401_UNAUTHORIZED
 
 
 # ------ Logout API Tests ----------------
-def test_auth_logout_success(client: TestClient, refresh_token: str):
+def test_auth_logout_api_success(client: TestClient, refresh_token: str):
     response = client.post(f"{settings.API_V1_STR}/auth/logout",
                            json={"refresh_token": refresh_token})
     assert response.status_code == status.HTTP_204_NO_CONTENT
 
 
-def test_auth_logout_no_token(client: TestClient):
+def test_auth_logout_api_no_token(client: TestClient):
     response = client.post(f"{settings.API_V1_STR}/auth/logout")
     assert response.status_code == status.HTTP_422_UNPROCESSABLE_CONTENT
 
 
-def test_auth_logout_invalid_token(client: TestClient):
+def test_auth_logout_api_invalid_token(client: TestClient):
     response = client.post(f"{settings.API_V1_STR}/auth/logout",
                            json={"refresh_token": "invalidtoken"})
     assert response.status_code == status.HTTP_401_UNAUTHORIZED
