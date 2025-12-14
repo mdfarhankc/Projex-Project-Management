@@ -1,4 +1,4 @@
-.PHONY: seed dev run db_upgrade
+.PHONY: seed dev run db_upgrade docker_up_build docker_up docker_down
 
 seed:
 	@uv run python -m app.seed.main
@@ -11,3 +11,12 @@ run:
 
 db_upgrade:
 	@uv run alembic upgrade head
+
+docker_up_build:
+	@docker compose up --build
+
+docker_up:
+	@docker compose up
+
+docker_down:
+	@docker compose down

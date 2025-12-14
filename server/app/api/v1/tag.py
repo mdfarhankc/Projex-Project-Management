@@ -18,7 +18,7 @@ router = APIRouter(tags=["Tag"])
     response_model=TagResponse,
     status_code=status.HTTP_201_CREATED,
     summary="Create new tag")
-def tag_create_new_tag(session: SessionDep, tag_create: TagCreate, current_user: CurrentUser):
+def tag_create_new_tag_api(session: SessionDep, tag_create: TagCreate, current_user: CurrentUser):
     tag = tag_service.get_tag_by_name(
         session=session, tag_name=tag_create.name)
     if tag:
@@ -34,7 +34,7 @@ def tag_create_new_tag(session: SessionDep, tag_create: TagCreate, current_user:
     status_code=status.HTTP_200_OK,
     summary="Search tags by query"
 )
-def search_tags(
+def tag_search_tags_api(
     session: SessionDep,
     q: Optional[str] = Query(default=None, description="Search query"),
     current_user: CurrentUser = None

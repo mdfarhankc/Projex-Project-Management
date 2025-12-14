@@ -5,7 +5,7 @@ from typing import Annotated
 from app.api.deps import CurrentUser
 from app.core.database import SessionDep, RedisDep
 from app.core.security import create_access_token, create_refresh_token, decode_refresh_token
-from app.services import user_service, redis_service
+from app.services import user_service, redis_service, workspace_service
 from app.exceptions.auth import InvalidTokenException
 from app.exceptions.user import UserAlreadyExistException, IncorrectCredsException, InactiveUserException
 from app.schemas.auth import (
@@ -33,6 +33,9 @@ def auth_register(session: SessionDep, register_user: UserCreate):
         raise UserAlreadyExistException()
     new_user = user_service.create_new_user(
         session=session, user_create=register_user)
+    # After creating user, create a personal workspace for the user
+    workspace_service.create_default_workspace_for_user(
+        session=session, user_id=new_user.id, user_name=new_user.full_name)
     return new_user
 
 

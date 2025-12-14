@@ -1,7 +1,7 @@
 [project]
-name = "project_server"
+name = "projex_server"
 version = "1.0"
-description = "Project - Project Management Server"
+description = "Projex - Project Management Server"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [

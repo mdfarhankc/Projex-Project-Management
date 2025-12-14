@@ -19,12 +19,17 @@ class User(SQLModel, table=True):
     full_name: str = Field(nullable=False, max_length=255)
     email: str = Field(unique=True, index=True, max_length=255)
     hashed_password: str
+    image_url: Optional[str] = Field(default=None, max_length=500)
+
+    # Boolean fields
     is_active: bool = Field(default=True)
     is_superuser: bool = Field(default=False)
 
     # Timestamp fields
-    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
-    updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    created_at: datetime = Field(
+        default_factory=lambda: datetime.now(timezone.utc))
+    updated_at: datetime = Field(
+        default_factory=lambda: datetime.now(timezone.utc))
     last_login_at: Optional[datetime] = None
 
     # Owned Projects - One2many

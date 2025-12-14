@@ -14,8 +14,10 @@ def get_user_by_email(*, session: Session, email: str) -> User | None:
 def create_new_user(*, session: Session, user_create: UserCreate) -> User:
     user_obj = User.model_validate(
         user_create,
-        update={"hashed_password": get_password_hash(
-            password=user_create.password)}
+        update={
+            "hashed_password": get_password_hash(password=user_create.password),
+            "image_url": f"https://api.dicebear.com/9.x/adventurer/svg?seed={user_create.full_name}"
+        }
     )
     session.add(user_obj)
     session.commit()
